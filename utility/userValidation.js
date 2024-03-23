@@ -6,7 +6,7 @@ const userRegisterValidate = (req, res, next) => {
         email: Joi.string().email().required(),
         password: Joi.string().min(4).alphanum().required()
     });
-    const {error, value} = schema.validate(req, body);
+    const {error, value} = schema.validate(req.body);
     
     if(error) {
         return res.status(400).json({message: "Bad Request", error})
