@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 module.exports = {
     //TODO: validate req.body - Done
     //TODO: create MongoDB UserModel - Done
-    //TODO: encrypt password
-    //TODO: save data to Mongo
-    //TODO: return data to client
+    //TODO: encrypt password - Done
+    //TODO: save data to Mongo - Done
+    //TODO: return data to client - Done
 
 
     registerUser: async (req, res) => {
