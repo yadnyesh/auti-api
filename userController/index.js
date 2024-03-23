@@ -1,6 +1,7 @@
 const res = require("express/lib/response");
 const UserModel = require("../models/UserModel");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     //TODO: validate req.body - Done
@@ -22,7 +23,39 @@ module.exports = {
         }
     },
 
-    loginUser: (req, res) => {
+    loginUser: async (req, res) => {
+        //TODO: Validate user email
+        //TODO: compare password
+        //TODO: create jwt
+        //TODO: send response to client
+        
+        try {
+            const user = await UserModel.findOne({email: req.body.email});
+            if(!user) {
+                return res.status(401).json({ message:'Authentical Failed', err});
+            }
+
+            const isPasswordEqual = await bcrypt.compare(req.body.password, user.password);
+
+            if(!isPasswordEqual){
+                return res.status(401).json({ message:'Authentical Failed', err});
+            }
+
+            const tokenObject = {
+                _id: user._id,
+                fullName: user.fullName,
+                email: user.email
+            }
+
+            const jwtToken = jwt.sign(tokenObject, process.env.SECRET, {expiresIn: '4h'});
+
+            return res.status(200)
+                    .json({jwtToken, tokenObject});
+
+        } catch(err) {
+            return res.status(500).json({message:'error', err});
+        }
+        
         res.send('Login Success')
     }
 }
