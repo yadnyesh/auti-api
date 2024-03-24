@@ -61,7 +61,7 @@ module.exports = {
 
     getUsers : async(req, res) => {
         try {
-            const users = await UserModel.find();
+            const users = await UserModel.find({}, {password:0});
             return res.status(400)
             .json({data: users});
         }catch(err) {
